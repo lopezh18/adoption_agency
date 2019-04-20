@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<h1>Chris & Haley's Shelter</h1>
     <ul>
         {% for pet in pets%}
 
@@ -11,4 +12,7 @@
     </ul>
     <a href="/add" class="btn btn-success">Add a Pet</a>
 
+<h2>Random Petfinder Pet</h2>
+    
+<p><img src="{{pet_finder.photos[0].small}}" alt="">{{pet_finder.name}}</p>
 {% endblock %}

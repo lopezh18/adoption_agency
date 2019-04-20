@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 from models import Pet, db, connect_db
 from forms import AddPetForm
+from pet_finder import find_random_pet
+from secrets import API_KEY, TOKEN
 
 
 app = Flask(__name__)
@@ -18,7 +20,9 @@ db.create_all()
 @app.route('/')
 def index():
     pets = Pet.query.all()
-    return render_template('home.html', pets=pets)
+    pet_finder = find_random_pet()
+
+    return render_template('home.html', pets=pets, pet_finder=pet_finder)
 
 
 @app.route('/add', methods=['POST','GET'])
@@ -51,6 +55,7 @@ def edit_pet(pet_id):
         age = form.age.data
         notes = form.notes.data
         available = form.available.data
+        #can replace filterby with get or 404
         pet = Pet.query.filter_by(id=pet_id).update(dict(name=name, species=species, photo_url=photo_url, age=age, notes=notes, available=available))
         db.session.commit()
         return redirect(f'/{pet_id}')
